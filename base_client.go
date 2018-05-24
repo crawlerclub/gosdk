@@ -1,9 +1,8 @@
 package gosdk
 
 import (
+	"crawler.club/dl"
 	"fmt"
-
-	"github.com/liuzl/dl"
 )
 
 var (
@@ -16,30 +15,23 @@ type Client struct {
 }
 
 func NewClient(ak, sk string) *Client {
-	return &Client{
-		Ak: ak,
-		Sk: sk,
-	}
+	return &Client{ak, sk}
 }
 
 func (c *Client) Request(url string, data interface{}) (string, error) {
 	var err error
-	url, err = genUrl(url, nil)
-	if err != nil {
+	if url, err = genUrl(url, nil); err != nil {
 		return "", err
 	}
 
 	var body []byte
-	body, err = genBody(data)
-
-	if err != nil {
+	if body, err = genBody(data); err != nil {
 		return "", err
 	}
 	headers := genHeaders(body, nil)
 
 	var msg string
-	msg, err = genMsg("POST", url, body, headers)
-	if err != nil {
+	if msg, err = genMsg("POST", url, body, headers); err != nil {
 		return "", err
 	}
 
